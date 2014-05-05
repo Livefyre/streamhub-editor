@@ -19,7 +19,7 @@ require.config({
       location: 'src/javascript',
       main: 'editor'
     },{
-      name: 'templates',
+      name: 'streamhub-editor/templates',
       location: 'src/templates'
     },{
       name: 'view',
