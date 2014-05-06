@@ -1,0 +1,90 @@
+@import "/lib/livefyre-bootstrap/src/styles/mixins.less";
+@editorTextHeight: 22px;
+
+textarea.lf-editor-field,
+.lf-editor-resize {
+    border: none;
+    .border-radius(0);
+    .box-shadow(none);
+    box-sizing: border-box;
+    font: normal 15px/@editorTextHeight @georgia;
+    margin: 0;
+    max-height: 200px;
+    min-height: 44px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 30px;
+    resize: none;
+    vertical-align: top;
+    width: 100%;
+    word-wrap: break-word;
+}
+.lf-editor-resize {
+    .opacity(0);
+    position: absolute;
+    z-index: -1;
+
+    p {
+        min-height: @editorTextHeight;
+        line-height: @editorTextHeight;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* TODO (jj): more centralized mixin? */;
+.hover-box(@display: inline-block) {
+    border: 1px solid transparent;
+    color: #a2a5aa;
+    cursor: pointer;
+    display: @display;
+    height: 22px;
+    line-height: 22px;
+    padding: 0 6px;
+    text-decoration: none;
+    .user-select(none);
+
+    &:hover {
+        background: #f7f7f5;
+        border: 1px solid #b7b8ba;
+        .border-radius(3px);
+    }
+    &:active {
+        background: #eaeae8;
+        border: 1px solid #abacae;
+        .border-radius(3px);
+        .box-shadow(inset 0 1px 2px 0 rgba(0, 0, 0, 0.3));
+    }
+}
+
+.lf-editor-error {
+    background: #fff;
+    border: 1px solid #ccc;
+    .border-radius(3px);
+    cursor: pointer;
+    height: 100%;
+    left: -1px;
+    .opacity(0);
+    position: absolute;
+    top: -1px;
+    .user-select(none);
+    width: 100%;
+
+    a.lf-close {
+        color: #999;
+        .hover-box();
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+    span {
+        color: #666;
+        display: block;
+        font-family: @helvetica;
+        line-height: @editorTextHeight;
+        margin: 0 auto;
+        text-align: center;
+        .vertical-center();
+        width: 70%;
+    }
+}

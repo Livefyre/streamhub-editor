@@ -36,6 +36,36 @@ var Editor = function(opts) {
 };
 inherits(Editor, View);
 
+/** @enum {string} */
+Editor.prototype._i18n = {
+    PLACEHOLDERTEXT: 'The Call of the Comment',
+    POST: 'Post',
+    ERRORS: {
+        BODY: 'Please add a message',
+        GENERIC: 'There was an error'
+    }
+};
+
+/** @enum {string} */
+Editor.prototype.classes = {
+    FIELD: 'lf-editor-field',
+    FOCUS: 'lf-editor-focus',
+    RESIZE: 'lf-editor-resize',
+    POST_BTN: 'lf-editor-post-btn'
+};
+
+/** @override */
+Editor.prototype.events = new EventMap((function() {
+    var classes = Editor.prototype.classes;
+    var events = {};
+    events['blur .' + classes.FIELD] = '_handleEditorBlur';
+    events['click .' + classes.POST_BTN] = 'handlePostBtnClick';
+    events['focus .' + classes.FIELD] = '_handleEditorFocus';
+    events['keydown .' + classes.FIELD] = '_handleEditorKeydown';
+    events['keyup .' + classes.FIELD] = '_handleEditorKeyup';
+    return events;
+})());
+
 /**
  * Handle the blur event in the textarea.
  * @private
@@ -93,16 +123,6 @@ Editor.prototype._handleEditorKeyup = function (ev) {
     this._resize();
 };
 
-/** @enum {string} */
-Editor.prototype._i18n = {
-    PLACEHOLDERTEXT: 'The Call of the Comment',
-    POST: 'Post',
-    ERRORS: {
-        BODY: 'Please add a message',
-        GENERIC: 'There was an error'
-    }
-};
-
 /**
  * Get the contents of the editor and do any processing required.
  * @return {string}
@@ -151,26 +171,6 @@ Editor.prototype.buildPostEventObj = function() {
     event.success = $.proxy(this.handlePostSuccess, this);
     return event;
 };
-
-/** @enum {string} */
-Editor.prototype.classes = {
-    FIELD: 'lf-editor-field',
-    FOCUS: 'lf-editor-focus',
-    RESIZE: 'lf-editor-resize',
-    POST_BTN: 'lf-editor-post-btn'
-};
-
-/** @override */
-Editor.prototype.events = new EventMap((function() {
-    var classes = Editor.prototype.classes;
-    var events = {};
-    events['blur .' + classes.FIELD] = '_handleEditorBlur';
-    events['click .' + classes.POST_BTN] = 'handlePostBtnClick';
-    events['focus .' + classes.FIELD] = '_handleEditorFocus';
-    events['keydown .' + classes.FIELD] = '_handleEditorKeydown';
-    events['keyup .' + classes.FIELD] = '_handleEditorKeyup';
-    return events;
-})());
 
 /**
  * Focus on the textarea.
