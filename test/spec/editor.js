@@ -6,10 +6,6 @@ var sinon = require('sinon');
 describe('streamhub-editor/editor', function() {
     var div, postBtnEl, view;
 
-    // The editor class doesn't have a template by default, but add one now so
-    // that we can run some test cases.
-    // Editor.prototype.template = require('hgn!templates/editor');
-
     beforeEach(function() {
         div = document.createElement('div');
         view = new Editor({
@@ -43,7 +39,7 @@ describe('streamhub-editor/editor', function() {
     it('should reset blank field back to placeholder on blur in normal mode', function() {
         view.$textareaEl.val('');
         view.$textareaEl.blur();
-        expect(view.$textareaEl.attr('placeholder')).to.equal(view.placeholderText);
+        expect(view.$textareaEl.attr('placeholder')).to.equal(view._i18n.PLACEHOLDERTEXT);
     });
 
     it('should not reset non-empty field back to placeholder on blur in normal mode', function() {
@@ -56,7 +52,7 @@ describe('streamhub-editor/editor', function() {
         view._placeholderSupported = false;
         view.$textareaEl.val('');
         view.$textareaEl.blur();
-        expect(view.$textareaEl.val()).to.equal(view.placeholderText);
+        expect(view.$textareaEl.val()).to.equal(view._i18n.PLACEHOLDERTEXT);
     });
 
     it('should not reset non-empty field back to placeholder on blur in hack mode', function() {
@@ -71,6 +67,11 @@ describe('streamhub-editor/editor', function() {
         view.$textareaEl.val('abc');
         view.$textareaEl.focus();
         expect(view.$textareaEl.val()).to.equal('abc');
+    });
+
+    it('should show errors', function () {
+        view.showError('ERROR ERROR ERROR');
+        expect(view.$('.lf-error-message').html()).to.equal('ERROR ERROR ERROR');
     });
 
     it('should support line breaks', function() {

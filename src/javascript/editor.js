@@ -4,6 +4,7 @@
  */
 
 var $ = require('jquery');
+var errorTemplate = require('hgn!streamhub-editor/templates/editorerror');
 var EventMap = require('view/event-map');
 var inherits = require('inherits');
 var util = require('streamhub-editor/util');
@@ -26,8 +27,6 @@ var Editor = function(opts) {
      */
     this._originalHeight = null;
 
-    this.placeholderText = opts.placeholderText || this.placeholderText;
-
     /**
      * Whether placeholders are supported or not.
      * @type {boolean}
@@ -47,7 +46,7 @@ Editor.prototype._handleEditorBlur = function () {
     if (this._placeholderSupported || this.$textareaEl.val() !== '') {
         return;
     }
-    this.$textareaEl.val(this.placeholderText);
+    this.$textareaEl.val(this._i18n.PLACEHOLDERTEXT);
 };
 
 /**
@@ -61,7 +60,7 @@ Editor.prototype._handleEditorFocus = function () {
         return;
     }
 
-    if (this.$textareaEl.val() !== this.placeholderText) {
+    if (this.$textareaEl.val() !== this._i18n.PLACEHOLDERTEXT) {
         return;
     }
     this.$textareaEl.val('');
@@ -94,6 +93,16 @@ Editor.prototype._handleEditorKeyup = function (ev) {
     this._resize();
 };
 
+/** @enum {string} */
+Editor.prototype._i18n = {
+    PLACEHOLDERTEXT: 'The Call of the Comment',
+    POST: 'Post',
+    ERRORS: {
+        BODY: 'Please add a message',
+        GENERIC: 'There was an error'
+    }
+};
+
 /**
  * Get the contents of the editor and do any processing required.
  * @return {string}
@@ -110,11 +119,11 @@ Editor.prototype._getContents = function () {
  */
 Editor.prototype._processPlaceholders = function () {
     if (this.$textareaEl[0].placeholder !== undefined) {
-        this.$textareaEl.attr('placeholder', this.placeholderText);
+        this.$textareaEl.attr('placeholder', this._i18n.PLACEHOLDERTEXT);
         return;
     }
     this._placeholderSupported = false;
-    this.$textareaEl.val(this.placeholderText);
+    this.$textareaEl.val(this._i18n.PLACEHOLDERTEXT);
 };
 
 /**
@@ -149,11 +158,6 @@ Editor.prototype.classes = {
     FOCUS: 'lf-editor-focus',
     RESIZE: 'lf-editor-resize',
     POST_BTN: 'lf-editor-post-btn'
-};
-
-/** @enum {string} */
-Editor.prototype.errors = {
-    BODY: 'Please enter a body'
 };
 
 /** @override */
@@ -214,13 +218,10 @@ Editor.prototype.initialize = function () {
 Editor.prototype.getTemplateContext = function () {
     return {
         strings: {
-            post: 'Post'
+            post: this._i18n.POST
         }
-    }
+    };
 };
-
-/** @type {string} */
-Editor.prototype.placeholderText = 'The Call of the Comment';
 
 /** @override */
 Editor.prototype.render = function() {
@@ -252,7 +253,25 @@ Editor.prototype.sendPostEvent = util.abstractMethod;
  * Show an error message to the user.
  * @param {string} msg The error message to display.
  */
-Editor.prototype.showError = util.abstractMethod;
+Editor.prototype.showError = function (msg) {
+    if (this.$errorEl) {
+        return;
+    }
+
+    // TODO (mark): Eventually we'll want to have a map for error event types
+    // but the SDK only returns error message strings which are useless to us.
+    this.$errorEl = $(errorTemplate({msg: msg}));
+    this.$el.append(this.$errorEl);
+    this.$errorEl.fadeTo(500, 0.98);
+    this.$textareaEl.blur();
+
+    this.$errorEl.one('click', $.proxy(function (ev) {
+        ev.stopPropagation();
+        this.$errorEl.remove();
+        this.$errorEl = null;
+        this.focus();
+    }, this));
+};
 
 /**
  * Validate the post data.
@@ -261,7 +280,7 @@ Editor.prototype.showError = util.abstractMethod;
  */
 Editor.prototype.validate = function(data) {
     if (!data.body) {
-        this.showError(this.errors.BODY);
+        this.showError(this._i18n.ERRORS.BODY);
         return false;
     }
     return true;
