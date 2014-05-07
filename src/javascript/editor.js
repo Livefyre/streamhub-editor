@@ -33,6 +33,9 @@ var Editor = function(opts) {
      * @private
      */
     this._placeholderSupported = true;
+
+    // overridable strings
+    this._i18n = $.extend(true, {}, this._i18n, opts.i18n);
 };
 inherits(Editor, View);
 
@@ -59,12 +62,21 @@ Editor.prototype.events = new EventMap((function() {
     var classes = Editor.prototype.classes;
     var events = {};
     events['blur .' + classes.FIELD] = '_handleEditorBlur';
-    events['click .' + classes.POST_BTN] = 'handlePostBtnClick';
+    events['click .' + classes.POST_BTN] = '_handlePostBtnClick';
     events['focus .' + classes.FIELD] = '_handleEditorFocus';
     events['keydown .' + classes.FIELD] = '_handleEditorKeydown';
     events['keyup .' + classes.FIELD] = '_handleEditorKeyup';
     return events;
 })());
+
+/**
+ * Get the contents of the editor and do any processing required.
+ * @return {string}
+ * @private
+ */
+Editor.prototype._getContents = function () {
+    return util.normalizeNewlines(this.$textareaEl.val());
+};
 
 /**
  * Handle the blur event in the textarea.
@@ -124,13 +136,28 @@ Editor.prototype._handleEditorKeyup = function (ev) {
 };
 
 /**
- * Get the contents of the editor and do any processing required.
- * @return {string}
- * @private
+ * Handle the post button click event. This should validate the data and
+ * dispatch a post event that a controller can handle.
  */
-Editor.prototype._getContents = function () {
-    return util.normalizeNewlines(this.$textareaEl.val());
+Editor.prototype._handlePostBtnClick = function() {
+    var data = this.buildPostEventObj();
+    if (!this._validate(data)) {
+        return;
+    }
+    this.sendPostEvent(data);
 };
+
+/**
+ * Post failure callback.
+ * @param {Object} data The response data.
+ */
+Editor.prototype._handlePostFailure = util.abstractMethod;
+
+/**
+ * Post success callback.
+ * @param {Object} data The response data.
+ */
+Editor.prototype._handlePostSuccess = util.abstractMethod;
 
 /**
  * Process the placeholder shenanigans that need to happen because IE 9- doesn't
@@ -161,6 +188,19 @@ Editor.prototype._resize = function () {
 };
 
 /**
+ * Validate the post data.
+ * @param {Object} data The post data to be validated.
+ * @return {boolean} Whether the post data is valid or not.
+ */
+Editor.prototype._validate = function(data) {
+    if (!data.body) {
+        this.showError(this._i18n.ERRORS.BODY);
+        return false;
+    }
+    return true;
+};
+
+/**
  * Build the post event object that will be dispatched from the editor.
  * @return {Object} The post event object.
  */
@@ -178,31 +218,6 @@ Editor.prototype.buildPostEventObj = function() {
 Editor.prototype.focus = function () {
     util.focusAndPlaceCursorAtEnd(this.$textareaEl);
 };
-
-/**
- * Handle the post button click event. This should validate the data and
- * dispatch a post event that a controller can handle.
- */
-Editor.prototype.handlePostBtnClick = function() {
-    var data = this.buildPostEventObj();
-    if (!this.validate(data)) {
-        return;
-    }
-    this.sendPostEvent(data);
-};
-
-/**
- * Post failure callback.
- * @param {Object} data The response data.
- */
-Editor.prototype.handlePostFailure = util.abstractMethod;
-
-/**
- * Post success callback.
- * @param {Object} data The response data.
- */
-Editor.prototype.handlePostSuccess = util.abstractMethod;
-
 
 /**
  * Initialize the editor view. This keeps track of the original height of the
@@ -271,19 +286,6 @@ Editor.prototype.showError = function (msg) {
         this.$errorEl = null;
         this.focus();
     }, this));
-};
-
-/**
- * Validate the post data.
- * @param {Object} data The post data to be validated.
- * @return {boolean} Whether the post data is valid or not.
- */
-Editor.prototype.validate = function(data) {
-    if (!data.body) {
-        this.showError(this._i18n.ERRORS.BODY);
-        return false;
-    }
-    return true;
 };
 
 module.exports = Editor;

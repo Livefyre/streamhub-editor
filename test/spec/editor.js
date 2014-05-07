@@ -22,7 +22,7 @@ describe('streamhub-editor/editor', function() {
     it('should trigger an event when the post button is clicked', function() {
         view.sendPostEvent = function(){};
         view.$textareaEl.val('test');
-        var clickSpy = sinon.spy(view, 'handlePostBtnClick');
+        var clickSpy = sinon.spy(view, '_handlePostBtnClick');
         var sendSpy = sinon.spy(view, 'sendPostEvent');
         view.delegateEvents();
         postBtnEl.click();
@@ -32,8 +32,8 @@ describe('streamhub-editor/editor', function() {
 
     it('should validate the text in the textarea', function() {
         view.showError = function(){};
-        expect(view.validate({body: ''})).to.be.false;
-        expect(view.validate({body: 'test'})).to.be.true;
+        expect(view._validate({body: ''})).to.be.false;
+        expect(view._validate({body: 'test'})).to.be.true;
     });
 
     it('should reset blank field back to placeholder on blur in normal mode', function() {
