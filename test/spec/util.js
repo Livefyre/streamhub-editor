@@ -23,4 +23,26 @@ describe('streamhub-editor/util', function() {
             expect(testFn.test()).to.equal('abc');
         });
     });
+
+    describe('normalizeNewlines', function () {
+        it('wraps contents in paragraph elements', function () {
+            expect(util.normalizeNewlines('abc')).to.equal('<p>abc</p>');
+        });
+
+        it('adds additional paragraphs for each newline', function () {
+            var result = util.normalizeNewlines('abc\ndef');
+            expect(result).to.equal('<p>abc</p><p>def</p>');
+        });
+
+        it('strips superfluous newlines at the end of the content', function () {
+            var result = util.normalizeNewlines('abc\ndef\n\n\n\n');
+            expect(result).to.equal('<p>abc</p><p>def</p>');
+        });
+
+        it('does not strip superfluous newlines between content', function () {
+            var result = util.normalizeNewlines('abc\n\n\n\ndef');
+            var expected = '<p>abc</p><p></p><p></p><p></p><p>def</p>';
+            expect(result).to.equal(expected);
+        });
+    });
 });
