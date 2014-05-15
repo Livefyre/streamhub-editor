@@ -1,6 +1,6 @@
 {
     "name": "streamhub-editor",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "main": [
         "./src/editor.js"
     ],
@@ -10,7 +10,7 @@
         "jquery": "~1.10.2",
         "mustache": "*",
         "requirejs-hogan-plugin": "*",
-        "view": "git://github.com/Livefyre/view.git#1.0.0"
+        "view": "git://github.com/Livefyre/view.git#~1.2.0"
     },
     "devDependencies": {
         "chai": "~1.8.1",

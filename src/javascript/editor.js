@@ -241,8 +241,9 @@ Editor.prototype.getTemplateContext = function () {
 /** @override */
 Editor.prototype.render = function() {
     View.prototype.render.call(this);
-    this.$resizeEl = this.$('.' + this.classes.RESIZE);
-    this.$textareaEl = this.$('.' + this.classes.FIELD);
+    this.$resizeEl = this.getElementsByClass(this.classes.RESIZE);
+    this.$textareaEl = this.getElementsByClass(this.classes.FIELD);
+    this.$errorContainer = this.$el;
     this._processPlaceholders();
 };
 
@@ -276,7 +277,7 @@ Editor.prototype.showError = function (msg) {
     // TODO (mark): Eventually we'll want to have a map for error event types
     // but the SDK only returns error message strings which are useless to us.
     this.$errorEl = $(errorTemplate({msg: msg}));
-    this.$el.append(this.$errorEl);
+    this.$errorContainer.append(this.$errorEl);
     this.$errorEl.fadeTo(500, 0.98);
     this.$textareaEl.blur();
 
