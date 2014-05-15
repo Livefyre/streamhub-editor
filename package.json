@@ -6,7 +6,7 @@
     "name": "Mark Doten",
     "email": "mark@livefyre.com"
   },
-  "version": "1.1.1",
+  "version": "1.1.2",
   "dependencies": {
     "bower": "*",
     "mocha-phantomjs": "3.1.6",
