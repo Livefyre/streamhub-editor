@@ -1,10 +1,11 @@
+var $ = require('jquery');
 var Editor = require('streamhub-editor/editor');
 var expect = require('chai').expect;
 chai.use(require('sinon-chai'));
 var sinon = require('sinon');
 
 describe('streamhub-editor/editor', function() {
-    var div, postBtnEl, view;
+    var div, postBtnEl, view, textAreaEl;
 
     beforeEach(function() {
         div = document.createElement('div');
@@ -13,6 +14,7 @@ describe('streamhub-editor/editor', function() {
         });
         view.render();
         postBtnEl = view.$('.' + view.classes.POST_BTN);
+        textAreaEl = view.$('.' + view.classes.FIELD);
     });
 
     it('should load with a post button', function() {
@@ -27,6 +29,20 @@ describe('streamhub-editor/editor', function() {
         view.delegateEvents();
         postBtnEl.click();
         assert(clickSpy.called);
+        assert(sendSpy.called);
+    });
+
+    it('should trigger an event when the enter key is pressed', function () {
+        view.sendPostEvent = function(){};
+        view.$textareaEl.val('test');
+        var keydownSpy = sinon.spy(view, '_handlePostBtnClick');
+        var sendSpy = sinon.spy(view, 'sendPostEvent');
+        view.delegateEvents();
+        textAreaEl.val('hi');
+        var e = $.Event("keydown");
+        e.which = e.keyCode = 13; // # Enter key code
+        $(textAreaEl).trigger(e);
+        assert(keydownSpy.called);
         assert(sendSpy.called);
     });
 

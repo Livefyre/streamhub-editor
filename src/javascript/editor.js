@@ -121,7 +121,7 @@ Editor.prototype._handleEditorKeydown = function (ev) {
         return;
     }
     ev.preventDefault();
-    this.handlePostBtnClick();
+    this._handlePostBtnClick();
 };
 
 /**
