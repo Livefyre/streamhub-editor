@@ -9,6 +9,7 @@ require.config({
     jquery: 'lib/jquery/jquery',
     mocha: 'lib/mocha/mocha',
     mustache: 'lib/mustache/mustache',
+    observer: 'lib/observer/src/observer',
     text: 'lib/requirejs-hogan-plugin/text',
     sinon: 'lib/sinonjs/sinon',
     'sinon-chai': 'lib/sinon-chai/lib/sinon-chai'
