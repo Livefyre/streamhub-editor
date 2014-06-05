@@ -240,11 +240,13 @@ Editor.prototype.getTemplateContext = function () {
 
 /** @override */
 Editor.prototype.render = function() {
+    var currentText = this.$textareaEl ? this.$textareaEl.val() : false;
     View.prototype.render.call(this);
     this.$resizeEl = this.getElementsByClass(this.classes.RESIZE);
     this.$textareaEl = this.getElementsByClass(this.classes.FIELD);
     this.$errorContainer = this.$el;
     this._processPlaceholders();
+    currentText && this.$textareaEl.val(currentText);
 };
 
 /**

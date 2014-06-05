@@ -99,6 +99,12 @@ describe('streamhub-editor/editor', function() {
         expect(content).to.equal('<p>abc</p><p></p><p>def</p>');
     });
 
+    it('should not clear text on render', function () {
+        view.$textareaEl.val('FOEVAR');
+        view.render();
+        expect(view.$textareaEl.val()).to.equal('FOEVAR');
+    });
+
     describe('_resize', function() {
         it('updates the resize element with the textarea\'s content converted to html', function() {
             view.$textareaEl.val('abc\ndef');
