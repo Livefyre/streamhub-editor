@@ -50,36 +50,6 @@ function handleLogout() {
 }
 
 /** @override */
-AuthEditor.prototype._i18n = (function () {
-    var strings = $.extend(true, {}, Editor.prototype._i18n);
-    strings.PLACEHOLDERTEXT = 'What would you like to say?';
-    strings.POST = 'Post Your Comment';
-    return strings;
-})();
-
-
-/** @override */
-AuthEditor.prototype.destroy = function () {
-    View.prototype.destroy.call(this);
-    this.stopListening();
-};
-
-/**
- * Get contextual data for a template.
- * @type {function()}
- * @override
- */
-AuthEditor.prototype.getTemplateContext = function () {
-    var username = this._user && this._user.get('displayName') || '';
-    return {
-        strings: {
-            post: this._i18n.POST,
-            username: username
-        }
-    };
-};
-
-/** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
     var newContent = new LivefyreContent();
     newContent.author = this._user._attributes;
