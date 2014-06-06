@@ -45,6 +45,7 @@ Editor.prototype._i18n = {
     POST: 'Post',
     ERRORS: {
         BODY: 'Please add a message',
+        DUPLICATE: 'As much as you like your note, you cannot post it twice',
         GENERIC: 'There was an error'
     }
 };
