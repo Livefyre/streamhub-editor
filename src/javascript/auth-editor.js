@@ -51,7 +51,7 @@ function handleLogout() {
 /** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
     var newContent = new LivefyreContent();
-    newContent.author = this._user._attributes;
+    newContent.author = this._user.get();
     newContent.body = ev.body;
     newContent.createdAt = new Date();
     this.$el.trigger('writeContent.hub', newContent);
