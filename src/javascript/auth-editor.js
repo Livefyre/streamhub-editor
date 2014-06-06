@@ -4,12 +4,11 @@
  */
 
 var $ = require('jquery');
+var inherits = require('inherits');
 var Auth = require('auth');
 var AuthRequiredCommand = require('streamhub-sdk/ui/auth-required-command');
-var Button = require('streamhub-sdk/ui/button');
 var Command = require('streamhub-sdk/ui/command');
 var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
-var inherits = require('inherits');
 var Observer = require('observer');
 var Editor = require('streamhub-editor');
 
