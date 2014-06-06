@@ -8,18 +8,18 @@ var Auth = require('auth');
 var AuthRequiredCommand = require('streamhub-sdk/ui/auth-required-command');
 var Button = require('streamhub-sdk/ui/button');
 var Command = require('streamhub-sdk/ui/command');
-var Content = require('streamhub-sdk/content');
+var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var inherits = require('inherits');
 var Observer = require('observer');
 var Editor = require('streamhub-editor');
 
 /**
- * Editor view.
+ * Auth Editor view.
  * @constructor
  * @extends {View}
  * @param {Object} opts Config options.
  */
-var AuthEditor = function(opts) {
+var AuthEditor = function (opts) {
     Editor.call(this, opts);
 
     Observer(this);
@@ -81,8 +81,10 @@ AuthEditor.prototype.getTemplateContext = function () {
 
 /** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
-    var newContent = new Content();
+    var newContent = new LivefyreContent();
+    newContent.author = this._user._attributes;
     newContent.body = ev.body;
+    newContent.createdAt = new Date();
     this.$el.trigger('writeContent.hub', newContent);
 };
 
