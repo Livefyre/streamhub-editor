@@ -11,6 +11,7 @@ var Command = require('streamhub-sdk/ui/command');
 var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var Observer = require('observer');
 var Editor = require('streamhub-editor');
+var template = require('hgn!streamhub-editor/templates/auth-editor');
 
 /**
  * Auth Editor view.
@@ -19,34 +20,39 @@ var Editor = require('streamhub-editor');
  * @param {Object} opts Config options.
  */
 var AuthEditor = function (opts) {
-    Editor.call(this, opts);
-
     Observer(this);
+    this.listenTo(Auth, 'login.livefyre', this.handleLogin.bind(this));
+    this.listenTo(Auth, 'logout', this.handleLogout.bind(this));
+
+    this._content = opts.content;
+    this._showAvatar = opts.showAvatar === undefined ? true : opts.showAvatar;
 
     this._postCmd = new Command(this._handlePostBtnClick.bind(this));
     this._authCmd = new AuthRequiredCommand(this._postCmd);
 
     this._user = Auth.get('livefyre');
 
-    this.listenTo(Auth, 'login.livefyre', handleLogin.bind(this));
-    this.listenTo(Auth, 'logout', handleLogout.bind(this));
+    Editor.call(this, opts);
 };
 inherits(AuthEditor, Editor);
+
+AuthEditor.prototype.template = template;
+AuthEditor.prototype.elClass = 'content-editor';
 
 /**
  * Set the user and rerender
  * @param {?User} livefyreUser
  */
-function handleLogin(livefyreUser) {
+AuthEditor.prototype.handleLogin = function (livefyreUser) {
     this._user = livefyreUser;
     this.render();
-}
+};
 
 /** Unset the user and rerender */
-function handleLogout() {
+AuthEditor.prototype.handleLogout = function () {
     this._user = null;
     this.render();
-}
+};
 
 /** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
@@ -54,7 +60,25 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     newContent.author = this._user.get();
     newContent.body = ev.body;
     newContent.createdAt = new Date();
-    this.$el.trigger('writeContent.hub', newContent);
+    newContent.parentId = this._content.id;
+    this._content.collection.write(newContent, this._handleWrite.bind(this));
+};
+
+AuthEditor.prototype._handleWrite = function (err, data) {
+    if (err) {
+        this.$el.trigger('writeFail.hub');
+        return;
+    }
+    this.$el.trigger('writeSuccess.hub');
+};
+
+AuthEditor.prototype.getTemplateContext = function () {
+    var context = Editor.prototype.getTemplateContext.call(this);
+    if (this._user) {
+        context.showAvatar = this._showAvatar;
+        context.avatarUrl = this._user.get('avatar');
+    }
+    return context;
 };
 
 module.exports = AuthEditor;
