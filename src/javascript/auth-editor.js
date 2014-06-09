@@ -1,36 +1,43 @@
-/**
- * @fileOverview The editor view class. This contains the editor box and any
- * buttons that go along with it.
- */
-
-var $ = require('jquery');
 var inherits = require('inherits');
 var Auth = require('auth');
 var AuthRequiredCommand = require('streamhub-sdk/ui/auth-required-command');
 var Command = require('streamhub-sdk/ui/command');
 var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var Observer = require('observer');
-var Editor = require('streamhub-editor');
+var Editor = require('streamhub-editor/editor');
 var template = require('hgn!streamhub-editor/templates/auth-editor');
+
+'use strict';
 
 /**
  * Auth Editor view.
  * @constructor
  * @extends {View}
- * @param {Object} opts Config options.
+ * @param {Object} [opts] Config options.
+ * @param {Collection} [opts.collection] The collection being written to
+ * @param {Content} [opts.content] The content being replied to
  */
 var AuthEditor = function (opts) {
+    opts = opts || {};
+    if (!opts.content) {
+        throw 'AuthEditor expects opts.content';
+    }
     Observer(this);
-    this.listenTo(Auth, 'login.livefyre', this.handleLogin.bind(this));
-    this.listenTo(Auth, 'logout', this.handleLogout.bind(this));
+    this.listenTo(Auth, 'login.livefyre', function () { this.handleLogin.apply(arguments); }.bind(this));
+    this.listenTo(Auth, 'logout', function () { this.handleLogout.apply(arguments); }.bind(this));
+
+    this._user = Auth.get('livefyre');
 
     this._content = opts.content;
+    this._collection = this._content.collection || opts.collection;
+    if (!this._collection) {
+        throw 'AuthEditor expects opts.content.collection to be defined or opts.collection to be specified';
+    }
+
     this._showAvatar = opts.showAvatar === undefined ? true : opts.showAvatar;
 
     this._postCmd = new Command(this._handlePostBtnClick.bind(this));
     this._authCmd = new AuthRequiredCommand(this._postCmd);
-
-    this._user = Auth.get('livefyre');
 
     Editor.call(this, opts);
 };
@@ -60,8 +67,10 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     newContent.author = this._user.get();
     newContent.body = ev.body;
     newContent.createdAt = new Date();
-    newContent.parentId = this._content.id;
-    this._content.collection.write(newContent, this._handleWrite.bind(this));
+    if (this._content) {
+        newContent.parentId = this._content.id;
+    }
+    this._collection.write(newContent, this._handleWrite.bind(this));
 };
 
 AuthEditor.prototype._handleWrite = function (err, data) {

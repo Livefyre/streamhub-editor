@@ -15,12 +15,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'requirejs.conf.js',
-      {pattern: 'src/*.js', included: false},
+      {pattern: 'test/lib/function.bind.js', included: true},
+      {pattern: 'lib/**/*.js', included: false},
+      {pattern: 'lib/**/*.json', included: false},
+      {pattern: 'lib/**/*.mustache', included: false},
       {pattern: 'src/**/*.js', included: false},
       {pattern: 'src/**/*.mustache', included: false},
       {pattern: 'test/spec/*.js', included: false},
       {pattern: 'test/spec/**/*.js', included: false},
-      {pattern: 'lib/**/*.js', included: false},
       {pattern: 'test/tests-main.js', included: true}
     ],
 

@@ -3,12 +3,14 @@
  * buttons that go along with it.
  */
 
-var $ = require('jquery');
+var $ = require('streamhub-sdk/jquery');
 var errorTemplate = require('hgn!streamhub-editor/templates/editorerror');
 var EventMap = require('view/event-map');
 var inherits = require('inherits');
 var util = require('streamhub-editor/util');
 var View = require('view');
+
+'use strict';
 
 /**
  * Editor view.

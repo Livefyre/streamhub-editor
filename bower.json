@@ -7,6 +7,8 @@
   "dependencies": {
     "cajon": "git@github.com:requirejs/cajon.git#~0.1.11",
     "inherits": "git://github.com/Livefyre/inherits.git",
+    "streamhub-sdk": "git://github.com/Livefyre/streamhub-sdk.git#editor",
+    "auth": "git://github.com/Livefyre/auth.git",
     "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#~1.0.0",
     "jquery": "~1.10.2",
     "mustache": "*",
@@ -17,7 +19,8 @@
   "devDependencies": {
     "chai": "~1.8.1",
     "sinon-chai": "~2.4.0",
-    "sinonjs": "~1.7.3"
+    "sinonjs": "~1.7.3",
+    "livefyre-auth": "git://github.com/livefyre/livefyre-auth.git"
   },
   "resolutions": {
     "view": "~1.2.0"
