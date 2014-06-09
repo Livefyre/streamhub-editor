@@ -15,7 +15,7 @@ var template = require('hgn!streamhub-editor/templates/auth-editor');
  * @extends {View}
  * @param {Object} [opts] Config options.
  * @param {Collection} [opts.collection] The collection being written to
- * @param {Content} [opts.content] The content being replied to
+ * @param {number} [opts.contentParentId] The content id being replied to
  */
 var AuthEditor = function (opts) {
     opts = opts || {};
