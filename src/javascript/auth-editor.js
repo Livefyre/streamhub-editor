@@ -20,7 +20,7 @@ var template = require('hgn!streamhub-editor/templates/auth-editor');
 var AuthEditor = function (opts) {
     opts = opts || {};
     if (!opts.collection) {
-        throw 'AuthEditor expects opts.collection';
+        throw 'AuthEditor expects opts.collection to be specified';
     }
     this._collection = opts.collection;
 
