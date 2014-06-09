@@ -19,21 +19,18 @@ var template = require('hgn!streamhub-editor/templates/auth-editor');
  */
 var AuthEditor = function (opts) {
     opts = opts || {};
-    if (!opts.content) {
-        throw 'AuthEditor expects opts.content';
+    if (!opts.collection) {
+        throw 'AuthEditor expects opts.collection';
     }
+    this._collection = opts.collection;
+
     Observer(this);
     this.listenTo(Auth, 'login.livefyre', function () { this.handleLogin.apply(arguments); }.bind(this));
     this.listenTo(Auth, 'logout', function () { this.handleLogout.apply(arguments); }.bind(this));
 
     this._user = Auth.get('livefyre');
 
-    this._content = opts.content;
-    this._collection = this._content.collection || opts.collection;
-    if (!this._collection) {
-        throw 'AuthEditor expects opts.content.collection to be defined or opts.collection to be specified';
-    }
-
+    this._contentParentId = opts.contentParentId
     this._showAvatar = opts.showAvatar === undefined ? true : opts.showAvatar;
 
     this._postCmd = new Command(this._handlePostBtnClick.bind(this));
@@ -67,8 +64,8 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     newContent.author = this._user.get();
     newContent.body = ev.body;
     newContent.createdAt = new Date();
-    if (this._content) {
-        newContent.parentId = this._content.id;
+    if (this._contentParentId) {
+        newContent.parentId = this._contentParentId;
     }
     this._collection.write(newContent, this._handleWrite.bind(this));
 };
@@ -79,6 +76,14 @@ AuthEditor.prototype._handleWrite = function (err, data) {
         return;
     }
     this.$el.trigger('writeSuccess.hub');
+};
+
+AuthEditor.prototype.setCollection = function (collection) {
+    this._collection = collection;
+};
+
+AuthEditor.prototype.setContentParentId = function (contentParentId) {
+    this._contentParentId = contentParentId;
 };
 
 AuthEditor.prototype.getTemplateContext = function () {
