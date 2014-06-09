@@ -1,6 +1,8 @@
 streamhub-editor
 ================
 
+[![Build Status](https://travis-ci.org/Livefyre/streamhub-editor.png)](https://travis-ci.org/Livefyre/streamhub-editor)
+
 Minimal editor for use with streamhub.
 
 ## Implementing a Subclass
