@@ -5,14 +5,14 @@
     "./src/editor.js"
   ],
   "dependencies": {
-    "cajon": "git@github.com:requirejs/cajon.git#~0.1.11",
+    "cajon": "git://github.com/requirejs/cajon.git#~0.1.11",
     "inherits": "git://github.com/Livefyre/inherits.git",
     "streamhub-sdk": "git://github.com/Livefyre/streamhub-sdk.git#editor",
     "auth": "git://github.com/Livefyre/auth.git",
     "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#~1.0.0",
     "jquery": "~1.10.2",
     "mustache": "*",
-    "observer": "git@github.com:Livefyre/Observer.git#0.1.0",
+    "observer": "git://github.com/Livefyre/Observer.git#0.1.0",
     "requirejs-hogan-plugin": "*",
     "view": "git://github.com/Livefyre/view.git#~1.2.0"
   },
