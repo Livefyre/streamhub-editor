@@ -19,6 +19,7 @@ var View = require('view');
  * @param {Object} opts Config options.
  */
 var Editor = function(opts) {
+    opts = opts || {};
     View.call(this, opts);
 
     /**
