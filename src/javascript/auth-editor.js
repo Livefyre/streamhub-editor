@@ -33,7 +33,7 @@ var AuthEditor = function (opts) {
     this._contentParentId = opts.contentParentId
     this._showAvatar = opts.showAvatar === undefined ? true : opts.showAvatar;
 
-    this._postCmd = new Command(this._handlePostBtnClick.bind(this));
+    this._postCmd = new Command(Editor.prototype._handlePostBtnClick.bind(this));
     this._authCmd = new AuthRequiredCommand(this._postCmd);
 
     Editor.call(this, opts);
@@ -58,6 +58,34 @@ AuthEditor.prototype.handleLogout = function () {
     this.render();
 };
 
+/**
+ * Handle the keydown event in the textarea.
+ * @param {jQuery.Event} ev
+ * @private
+ */
+AuthEditor.prototype._handleEditorKeydown = function (ev) {
+    ev.stopPropagation();
+    this._resize();
+    var isEnter = ev.keyCode === 13;
+    if (!isEnter || ev.shiftKey) {
+        return;
+    }
+    ev.preventDefault();
+    this._authCmd.execute();
+};
+
+/**
+ * Handle the post button click event. This should validate the data and
+ * dispatch a post event that a controller can handle.
+ */
+AuthEditor.prototype._handlePostBtnClick = function() {
+    var data = this.buildPostEventObj();
+    if (!this._validate(data)) {
+        return;
+    }
+    this._authCmd.execute();
+};
+
 /** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
     if (! this._collection) {
@@ -66,7 +94,7 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     }
 
     var newContent = new LivefyreContent();
-    newContent.author = this._user.get();
+    newContent.author = this._user ? this._user.get() : undefined;
     newContent.body = ev.body;
     newContent.createdAt = new Date();
     if (this._contentParentId) {
