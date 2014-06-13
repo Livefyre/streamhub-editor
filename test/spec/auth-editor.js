@@ -27,12 +27,6 @@ describe('streamhub-editor/auth-editor', function () {
         });
     });
 
-    it('throws when #_collection is undefined', function () {
-        expect(function () {
-            new AuthEditor();
-        }).to.throw('AuthEditor expects opts.collection to be specified');
-    });
-
     it('handles a user logging in', function () {
         var editor = new AuthEditor({
             collection: new Collection()

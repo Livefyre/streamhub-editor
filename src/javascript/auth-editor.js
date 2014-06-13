@@ -6,6 +6,9 @@ var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var Observer = require('observer');
 var Editor = require('streamhub-editor/editor');
 var template = require('hgn!streamhub-editor/templates/auth-editor');
+var debug = require('streamhub-sdk/debug');
+
+var log = debug('AuthEditor');
 
 'use strict';
 
@@ -14,14 +17,11 @@ var template = require('hgn!streamhub-editor/templates/auth-editor');
  * @constructor
  * @extends {View}
  * @param {Object} [opts] Config options.
- * @param {Collection} [opts.collection] The collection being written to
+ * @param {Writeable} [opts.collection] The collection being written to
  * @param {number} [opts.contentParentId] The content id being replied to
  */
 var AuthEditor = function (opts) {
     opts = opts || {};
-    if (!opts.collection) {
-        throw 'AuthEditor expects opts.collection to be specified';
-    }
     this._collection = opts.collection;
 
     Observer(this);
@@ -60,6 +60,11 @@ AuthEditor.prototype.handleLogout = function () {
 
 /** @override */
 AuthEditor.prototype.sendPostEvent = function (ev) {
+    if (! this._collection) {
+        log('Cannot write to undefined collection');
+        return;
+    }
+
     var newContent = new LivefyreContent();
     newContent.author = this._user.get();
     newContent.body = ev.body;
