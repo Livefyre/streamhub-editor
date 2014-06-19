@@ -6,7 +6,7 @@
     "name": "Mark Doten",
     "email": "mark@livefyre.com"
   },
-  "version": "1.1.7",
+  "version": "1.1.8",
   "dependencies": {
     "bower": "*",
     "mocha-phantomjs": "3.1.6",
@@ -25,7 +25,7 @@
     "karma-cajon": "*",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma": "~0.10.5",
-    "karma-mocha": "~0.1.0",
+    "karma-mocha": "0.1.0",
     "karma-safari-launcher": "~0.1.1",
     "karma-chai": "0.0.2"
   },

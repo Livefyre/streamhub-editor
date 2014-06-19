@@ -70,6 +70,9 @@ Editor.prototype.events = new EventMap((function() {
     return events;
 })());
 
+/** @override */
+Editor.prototype.template = require('hgn!streamhub-editor/templates/editor');
+
 /**
  * Get the contents of the editor and do any processing required.
  * @return {string}
@@ -140,25 +143,13 @@ Editor.prototype._handleEditorKeyup = function (ev) {
  * Handle the post button click event. This should validate the data and
  * dispatch a post event that a controller can handle.
  */
-Editor.prototype._handlePostBtnClick = function() {
+Editor.prototype._handlePostBtnClick = function () {
     var data = this.buildPostEventObj();
-    if (!this._validate(data)) {
+    if (!this.validate(data)) {
         return;
     }
     this.sendPostEvent(data);
 };
-
-/**
- * Post failure callback.
- * @param {Object} data The response data.
- */
-Editor.prototype._handlePostFailure = util.abstractMethod;
-
-/**
- * Post success callback.
- * @param {Object} data The response data.
- */
-Editor.prototype._handlePostSuccess = util.abstractMethod;
 
 /**
  * Process the placeholder shenanigans that need to happen because IE 9- doesn't
@@ -189,23 +180,10 @@ Editor.prototype._resize = function () {
 };
 
 /**
- * Validate the post data.
- * @param {Object} data The post data to be validated.
- * @return {boolean} Whether the post data is valid or not.
- */
-Editor.prototype._validate = function(data) {
-    if (!data.body) {
-        this.showError(this._i18n.ERRORS.BODY);
-        return false;
-    }
-    return true;
-};
-
-/**
  * Build the post event object that will be dispatched from the editor.
  * @return {Object} The post event object.
  */
-Editor.prototype.buildPostEventObj = function() {
+Editor.prototype.buildPostEventObj = function () {
     var event = {};
     event.body = this._getContents();
     event.failure = $.proxy(this._handlePostFailure, this);
@@ -239,8 +217,20 @@ Editor.prototype.getTemplateContext = function () {
     };
 };
 
+/**
+ * Post failure callback.
+ * @param {Object} data The response data.
+ */
+Editor.prototype.handlePostFailure = util.abstractMethod;
+
+/**
+ * Post success callback.
+ * @param {Object} data The response data.
+ */
+Editor.prototype.handlePostSuccess = util.abstractMethod;
+
 /** @override */
-Editor.prototype.render = function() {
+Editor.prototype.render = function () {
     var currentText = this.$textareaEl ? this.$textareaEl.val() : false;
     View.prototype.render.call(this);
     this.$resizeEl = this.getElementsByClass(this.classes.RESIZE);
@@ -258,9 +248,6 @@ Editor.prototype.reset = function () {
     this.$textareaEl.val('');
     this.$textareaEl.height(this._originalHeight);
 };
-
-/** @override */
-Editor.prototype.template = require('hgn!streamhub-editor/templates/editor');
 
 /**
  * Send the post event.
@@ -290,6 +277,19 @@ Editor.prototype.showError = function (msg) {
         this.$errorEl = null;
         this.focus();
     }, this));
+};
+
+/**
+ * Validate the post data.
+ * @param {Object} data The post data to be validated.
+ * @return {boolean} Whether the post data is valid or not.
+ */
+Editor.prototype.validate = function (data) {
+    if (!data.body) {
+        this.showError(this._i18n.ERRORS.BODY);
+        return false;
+    }
+    return true;
 };
 
 module.exports = Editor;

@@ -48,8 +48,8 @@ describe('streamhub-editor/editor', function() {
 
     it('should validate the text in the textarea', function() {
         view.showError = function(){};
-        expect(view._validate({body: ''})).to.be.false;
-        expect(view._validate({body: 'test'})).to.be.true;
+        expect(view.validate({body: ''})).to.be.false;
+        expect(view.validate({body: 'test'})).to.be.true;
     });
 
     it('should reset blank field back to placeholder on blur in normal mode', function() {
