@@ -181,7 +181,7 @@ Editor.prototype._processPlaceholders = function () {
 Editor.prototype._resize = function () {
     var content = this.$textareaEl.val();
     var height = 0;
-    this.$resizeEl.html(util.normalizeNewlines(content));
+    this.$resizeEl[0].innerHTML = util.normalizeNewlines(content);
     $.each(this.$resizeEl.children(), function (i, child) {
         height += $(child).height();
     });
