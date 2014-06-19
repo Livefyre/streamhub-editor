@@ -207,7 +207,7 @@ Editor.prototype._validate = function(data) {
  */
 Editor.prototype.buildPostEventObj = function() {
     var event = {};
-    event.body = this.$textareaEl.val();
+    event.body = this._getContents();
     event.failure = $.proxy(this._handlePostFailure, this);
     event.success = $.proxy(this._handlePostSuccess, this);
     return event;
