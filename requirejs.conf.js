@@ -44,8 +44,7 @@ require.config({
       location: "lib/streamhub-sdk/tests"
     },{
       name: 'streamhub-editor',
-      location: 'src/javascript',
-      main: 'editor'
+      location: 'src/javascript'
     },{
       name: 'streamhub-editor/styles',
       location: 'src/styles'

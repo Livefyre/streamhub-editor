@@ -1,10 +1,10 @@
 var $ = require('jquery');
-var Editor = require('streamhub-editor/editor');
+var Editor = require('streamhub-editor');
 var expect = require('chai').expect;
 chai.use(require('sinon-chai'));
 var sinon = require('sinon');
 
-describe('streamhub-editor/editor', function() {
+describe('streamhub-editor', function() {
     var div, postBtnEl, view, textAreaEl;
 
     beforeEach(function() {
