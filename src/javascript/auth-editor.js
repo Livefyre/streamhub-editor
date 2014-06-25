@@ -81,7 +81,7 @@ AuthEditor.prototype._handleEditorKeydown = function (ev) {
  */
 AuthEditor.prototype._handlePostBtnClick = function() {
     var data = this.buildPostEventObj();
-    if (!this._validate(data)) {
+    if (!this.validate(data)) {
         return;
     }
     this._authCmd.execute();
