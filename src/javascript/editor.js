@@ -9,6 +9,7 @@ var EventMap = require('view/event-map');
 var inherits = require('inherits');
 var util = require('streamhub-editor/util');
 var View = require('view');
+var editorStyles = require('less!streamhub-editor/styles/editor.less');
 
 'use strict';
 

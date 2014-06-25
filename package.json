@@ -13,6 +13,7 @@
   "devDependencies": {
     "express": "*",
     "http-server": "*",
+    "less": "*",
     "mocha-phantomjs": "3.1.6",
     "mocha": "*",
     "phantomjs": "1.9.2-2",
@@ -25,10 +26,14 @@
     "karma": "~0.10.5",
     "karma-mocha": "0.1.0",
     "karma-safari-launcher": "~0.1.1",
-    "karma-chai": "0.0.2"
+    "karma-chai": "0.0.2",
+    "requirejs": "2.1.9"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install",
+    "postinstall": "./node_modules/bower/bin/bower install && npm run build",
+    "build": "./node_modules/requirejs/bin/r.js -o ./tools/build.conf.js && npm run-script build-css",
+    "build-css": "npm run lessc && mkdir -p dist && cp src/styles/editor.css dist/streamhub-editor.min.css",
+    "lessc": "./node_modules/less/bin/lessc -ru --compress src/styles/editor.{less,css}",
     "start": "node ./dev/server.js",
     "test": "./node_modules/karma/bin/karma start tools/karma.conf.js"
   }

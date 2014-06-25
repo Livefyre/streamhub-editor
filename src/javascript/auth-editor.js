@@ -5,6 +5,7 @@ var Command = require('streamhub-sdk/ui/command');
 var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var Observer = require('observer');
 var Editor = require('streamhub-editor/editor');
+var editorStyles = require('less!streamhub-editor/styles/editor.less');
 var template = require('hgn!streamhub-editor/templates/auth-editor');
 var debug = require('streamhub-sdk/debug');
 
@@ -25,8 +26,8 @@ var AuthEditor = function (opts) {
     this._collection = opts.collection;
 
     Observer(this);
-    this.listenTo(Auth, 'login.livefyre', function () { this.handleLogin.apply(arguments); }.bind(this));
-    this.listenTo(Auth, 'logout', function () { this.handleLogout.apply(arguments); }.bind(this));
+    this.listenTo(Auth, 'login.livefyre', function () { this.handleLogin.apply(this, arguments); }.bind(this));
+    this.listenTo(Auth, 'logout', function () { this.handleLogout.apply(this, arguments); }.bind(this));
 
     this._user = Auth.get('livefyre');
 
@@ -97,15 +98,24 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     newContent.author = this._user ? this._user.get() : undefined;
     newContent.body = ev.body;
     newContent.createdAt = new Date();
+    newContent.collection = this._collection;
     if (this._contentParentId) {
         newContent.parentId = this._contentParentId;
     }
-    this._collection.write(newContent, this._handleWrite.bind(this));
+
+    function writeCollection() {
+        this._collection.write(newContent, this._handleWrite.bind(this));
+    }
+    writeCollection.call(this);
+
+    this._retry = writeCollection.bind(this);
+
+    this.$el.trigger('writeContent.hub', newContent);
 };
 
 AuthEditor.prototype._handleWrite = function (err, data) {
     if (err) {
-        this.$el.trigger('writeFail.hub');
+        this.$el.trigger('writeFailure.hub', { error: err, retry: this._retry });
         return;
     }
     this.$el.trigger('writeSuccess.hub');

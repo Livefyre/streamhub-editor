@@ -1,5 +1,4 @@
 require.config({
-  baseUrl: '/',
   paths: {
     base64: 'lib/base64/base64.min',
     chai: 'lib/chai/chai',
@@ -48,6 +47,9 @@ require.config({
       location: 'src/javascript',
       main: 'editor'
     },{
+      name: 'streamhub-editor/styles',
+      location: 'src/styles'
+    },{
       name: 'streamhub-editor/templates',
       location: 'src/templates'
     },{
@@ -69,6 +71,14 @@ require.config({
       name: 'view',
       location: 'lib/view/src',
       main: 'view'
+    },{
+      name: "css",
+      location: "lib/require-css",
+      main: "css"
+    },{
+      name: "less",
+      location: "lib/require-less",
+      main: "less"
     }
   ],
   shim: {
@@ -77,6 +87,18 @@ require.config({
     },
     'sinon': {
       exports: 'sinon'
+    }
+  },
+  css: {
+    clearFileEachBuild: 'dist/streamhub-editor.min.css',
+    transformEach: []
+  },
+  less: {
+    browserLoad: 'dist/streamhub-editor.min',
+    paths: ['lib'],
+    relativeUrls: true,
+    modifyVars: {
+      '@icon-font-path': "\"http://cdn.livefyre.com/libs/livefyre-bootstrap/v1.1.0/fonts/\""
     }
   }
 });

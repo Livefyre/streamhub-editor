@@ -20,10 +20,12 @@ module.exports = function(config) {
       {pattern: 'lib/**/*.json', included: false},
       {pattern: 'lib/**/*.mustache', included: false},
       {pattern: 'src/**/*.js', included: false},
+      {pattern: 'src/**/*.less', included: false},
       {pattern: 'src/**/*.mustache', included: false},
       {pattern: 'test/spec/*.js', included: false},
       {pattern: 'test/spec/**/*.js', included: false},
-      {pattern: 'test/tests-main.js', included: true}
+      {pattern: 'test/tests-main.js', included: true},
+      {pattern: 'dist/**/*.css', included: true}
     ],
 
 
