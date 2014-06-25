@@ -95,7 +95,7 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     }
 
     var newContent = new LivefyreContent();
-    newContent.author = this._user ? this._user.get() : undefined;
+    newContent.author = this._user.get();
     newContent.body = ev.body;
     newContent.createdAt = new Date();
     newContent.collection = this._collection;
