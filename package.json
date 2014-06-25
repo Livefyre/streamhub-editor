@@ -31,8 +31,7 @@
   },
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install && npm run build",
-    "build": "./node_modules/requirejs/bin/r.js -o ./tools/build.conf.js && npm run-script build-css",
-    "build-css": "npm run lessc && mkdir -p dist && cp src/styles/editor.css dist/streamhub-editor.min.css",
+    "build": "./node_modules/requirejs/bin/r.js -o ./tools/build.conf.js",
     "lessc": "./node_modules/less/bin/lessc -ru --compress src/styles/editor.{less,css}",
     "start": "node ./dev/server.js",
     "test": "./node_modules/karma/bin/karma start tools/karma.conf.js"
