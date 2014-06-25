@@ -18,7 +18,7 @@ var log = debug('AuthEditor');
  * @constructor
  * @extends {View}
  * @param {Object} [opts] Config options.
- * @param {Writeable} [opts.collection] The collection being written to
+ * @param {Collection} [opts.collection] The collection being written to
  * @param {number} [opts.contentParentId] The content id being replied to
  */
 var AuthEditor = function (opts) {
