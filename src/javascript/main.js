@@ -86,6 +86,10 @@ Editor.prototype._getContents = function () {
     return util.normalizeNewlines(this.$textareaEl.val());
 };
 
+Editor.prototype.setContents = function (content) {
+    this.$textareaEl.val(util.normalizeParagraphTags(content));
+};
+
 /**
  * Handle the blur event in the textarea.
  * @private
