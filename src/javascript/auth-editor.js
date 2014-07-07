@@ -138,4 +138,9 @@ AuthEditor.prototype.getTemplateContext = function () {
     return context;
 };
 
+AuthEditor.prototype.destroy = function () {
+    Editor.prototype.destroy.call(this);
+    this.stopListening(Auth);
+};
+
 module.exports = AuthEditor;
