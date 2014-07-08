@@ -24,6 +24,22 @@ util.normalizeNewlines = function (content) {
 };
 
 /**
+ * Convert <p> tags to newline chars
+ * @param {string} content
+ * @returns {string}
+ */
+util.normalizeParagraphTags = function (content) {
+    content = content.replace(/<p>/g, '');
+    content = content.replace(/<\/p>/g, '\n');
+    // remove trailing newline
+    var suffix = '\n';
+    if (content.indexOf(suffix, content.length = suffix.length) !== -1) {
+        content = content.slice(0, suffix.length * -1);
+    }
+    return content;
+};
+
+/**
  * Focus a textarea and place the cursor at the end of the text.
  * @param {jQuery.Element}
  */

@@ -3,12 +3,15 @@
  * buttons that go along with it.
  */
 
-var $ = require('jquery');
+var $ = require('streamhub-sdk/jquery');
 var errorTemplate = require('hgn!streamhub-editor/templates/editorerror');
 var EventMap = require('view/event-map');
 var inherits = require('inherits');
 var util = require('streamhub-editor/util');
 var View = require('view');
+var editorStyles = require('less!streamhub-editor/styles/editor.less');
+
+'use strict';
 
 /**
  * Editor view.
@@ -17,6 +20,7 @@ var View = require('view');
  * @param {Object} opts Config options.
  */
 var Editor = function(opts) {
+    opts = opts || {};
     View.call(this, opts);
 
     /**
@@ -80,6 +84,10 @@ Editor.prototype.template = require('hgn!streamhub-editor/templates/editor');
  */
 Editor.prototype._getContents = function () {
     return util.normalizeNewlines(this.$textareaEl.val());
+};
+
+Editor.prototype.setContents = function (content) {
+    this.$textareaEl.val(util.normalizeParagraphTags(content));
 };
 
 /**
