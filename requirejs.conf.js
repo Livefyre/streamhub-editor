@@ -1,6 +1,6 @@
 require.config({
   paths: {
-    base64: 'lib/base64/base64.min',
+    base64: 'lib/base64/base64',
     chai: 'lib/chai/chai',
     'event-emitter': 'lib/event-emitter/src/event-emitter',
     hgn: 'lib/requirejs-hogan-plugin/hgn',
