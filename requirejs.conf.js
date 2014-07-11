@@ -10,6 +10,7 @@ require.config({
     json: 'lib/requirejs-plugins/src/json',
     mocha: 'lib/mocha/mocha',
     mustache: 'lib/mustache/mustache',
+    mout: 'lib/mout/src',
     observer: 'lib/observer/src/observer',
     text: 'lib/requirejs-hogan-plugin/text',
     sinon: 'lib/sinonjs/sinon',
