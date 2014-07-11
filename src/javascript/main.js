@@ -45,7 +45,7 @@ inherits(Editor, View);
 
 /** @enum {string} */
 Editor.prototype._i18n = {
-    PLACEHOLDERTEXT: 'The Call of the Comment',
+    PLACEHOLDERTEXT: 'What would you like to say?',
     POST: 'Post',
     ERRORS: {
         BODY: 'Please add a message',
