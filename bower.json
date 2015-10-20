@@ -5,11 +5,11 @@
     "./src/editor.js"
   ],
   "dependencies": {
-    "cajon": "git://github.com/requirejs/cajon.git#~0.1.11",
+    "cajon": "git://github.com/requirejs/cajon.git#0.1.11",
     "inherits": "git://github.com/Livefyre/inherits.git",
     "streamhub-sdk": "git://github.com/Livefyre/streamhub-sdk.git#attachments-refactor-rebase",
     "auth": "git://github.com/Livefyre/auth.git#~0.2.0",
-    "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#~1.2.3",
+    "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#1.2.3",
     "jquery": "~1.10.2",
     "mustache": "*",
     "observer": "git://github.com/Livefyre/Observer.git#0.1.0",
