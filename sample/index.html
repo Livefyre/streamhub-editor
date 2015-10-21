@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/dev/css/editor.css">
+    </head>
+    <body>
+        <div>
+            <button id="auth-button">Log in</button>
+        </div>
+        <div id="content-editor"></div>
+        <div id="content-editor-auth"></div>
+
+        <script src="/lib/cajon/cajon.js"></script>
+        <script src="/requirejs.conf.js"></script>
+        <script>
+        requirejs.config({
+            baseUrl: '../',
+            deps: ['sample/index']
+        });
+        </script>
+    </body>
+</html>

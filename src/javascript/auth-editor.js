@@ -103,6 +103,10 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
         newContent.parentId = this._contentParentId;
     }
 
+    if (this._showTitle) {
+        newContent.title = ev.title;
+    }
+
     function writeCollection() {
         this._collection.write(newContent, this._handleWrite.bind(this));
     }

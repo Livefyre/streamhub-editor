@@ -126,7 +126,7 @@ describe('streamhub-editor/auth-editor', function () {
                 e.which = e.keyCode = 13; // # Enter key code
                 $(editorTextEl).trigger(e);
 
-                assert(! collectionWriteSpy.called);
+                assert(!collectionWriteSpy.called);
             });
         });
     });
@@ -151,6 +151,39 @@ describe('streamhub-editor/auth-editor', function () {
             editor.$el.find('.lf-editor-field').val('my post');
             editor.$el.find('.lf-editor-post-btn').trigger('click');
             assert(collectionWriteSpy.called);
+        });
+    });
+
+    describe('writes', function () {
+        var editor,
+            collection;
+
+        beforeEach(function () {
+            Auth.login({ livefyre: user});
+
+            collection = new Collection();
+            editor = new AuthEditor({
+                collection: collection,
+                showTitle: true
+            });
+            editor.render();
+        });
+
+        it('with expected payload', function () {
+            collection.write = function () {};
+            var collectionWriteSpy = sinon.spy(collection, 'write');
+            editor.$el.find('.lf-editor-field').val('my post');
+            editor.$el.find('.lf-editor-title').val('my title');
+            editor.$el.find('.lf-editor-post-btn').trigger('click');
+            assert(collectionWriteSpy.called);
+
+            var blob = collectionWriteSpy.lastCall.args[0];
+            assert.equal(blob.title, 'my title');
+            assert.equal(blob.body, '<p>my post</p>');
+
+            ['title', 'body', 'author', 'createdAt', 'collection'].forEach(function (key) {
+                assert(key in blob);
+            });
         });
     });
 });
