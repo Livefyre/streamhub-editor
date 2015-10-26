@@ -19,11 +19,14 @@ require.config({
   },
   packages: [
     {
+      name: "streamhub-ui",
+      location: "lib/streamhub-ui/src"
+    },{
       name: "streamhub-sdk",
       location: "lib/streamhub-sdk/src"
     },{
-    name: "streamhub-sdk/auth",
-    location: "lib/streamhub-sdk/src/auth"
+      name: "streamhub-sdk/auth",
+      location: "lib/streamhub-sdk/src/auth"
     },{
       name: "streamhub-sdk/collection",
       location: "lib/streamhub-sdk/src/collection"
@@ -33,9 +36,6 @@ require.config({
     },{
       name: "streamhub-sdk/modal",
       location: "lib/streamhub-sdk/src/modal"
-    },{
-      name: "streamhub-sdk/ui",
-      location: "lib/streamhub-sdk/src/ui"
     },{
       name: "streamhub-sdk/jquery",
       location: "lib/streamhub-sdk/src",

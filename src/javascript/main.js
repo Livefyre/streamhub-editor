@@ -40,12 +40,14 @@ var Editor = function(opts) {
 
     // overridable strings
     this._i18n = $.extend(true, {}, this._i18n, opts.i18n);
+    this._showTitle = opts.showTitle === undefined ? false : opts.showTitle;
 };
 inherits(Editor, View);
 
 /** @enum {string} */
 Editor.prototype._i18n = {
     PLACEHOLDERTEXT: 'What would you like to say?',
+    TITLE_PLACEHOLDERTEXT: 'Enter a title',
     POST: 'Post',
     ERRORS: {
         BODY: 'Please add a message',
@@ -59,6 +61,7 @@ Editor.prototype.classes = {
     FIELD: 'lf-editor-field',
     FOCUS: 'lf-editor-focus',
     RESIZE: 'lf-editor-resize',
+    TITLE: 'lf-editor-title',
     POST_BTN: 'lf-editor-post-btn'
 };
 
@@ -71,6 +74,8 @@ Editor.prototype.events = new EventMap((function() {
     events['focus .' + classes.FIELD] = '_handleEditorFocus';
     events['keydown .' + classes.FIELD] = '_handleEditorKeydown';
     events['keyup .' + classes.FIELD] = '_handleEditorKeyup';
+    events['blur .' + classes.TITLE] = '_handleTitleBlur';
+    events['focus .' + classes.TITLE] = '_handleTitleFocus';
     return events;
 })());
 
@@ -121,6 +126,32 @@ Editor.prototype._handleEditorFocus = function () {
 };
 
 /**
+ * Handle the blur event in the title.
+ * @private
+ */
+Editor.prototype._handleTitleBlur = function () {
+    if (this._placeholderSupported || this.$titleEl.val() !== '') {
+        return;
+    }
+    this.$titleEl.val(this._i18n.TITLE_PLACEHOLDERTEXT);
+};
+
+/**
+ * Handle the focus event in the title.
+ * @private
+ */
+Editor.prototype._handleTitleFocus = function () {
+    if (this._placeholderSupported) {
+        return;
+    }
+
+    if (this.$titleEl.val() !== this._i18n.TITLE_PLACEHOLDERTEXT) {
+        return;
+    }
+    this.$titleEl.val('');
+};
+
+/**
  * Handle the keydown event in the textarea.
  * @param {jQuery.Event} ev
  * @private
@@ -167,10 +198,19 @@ Editor.prototype._handlePostBtnClick = function () {
 Editor.prototype._processPlaceholders = function () {
     if (this.$textareaEl[0].placeholder !== undefined) {
         this.$textareaEl.attr('placeholder', this._i18n.PLACEHOLDERTEXT);
+
+        if (this._showTitle) {
+            this.$titleEl.attr('placeholder', this._i18n.TITLE_PLACEHOLDERTEXT);
+        }
         return;
     }
+
     this._placeholderSupported = false;
     this.$textareaEl.val(this._i18n.PLACEHOLDERTEXT);
+
+    if (this._showTitle) {
+        this.$titleEl.val(this._i18n.TITLE_PLACEHOLDERTEXT);
+    }
 };
 
 /**
@@ -194,6 +234,11 @@ Editor.prototype._resize = function () {
 Editor.prototype.buildPostEventObj = function () {
     var event = {};
     event.body = this._getContents();
+
+    if (this._showTitle) {
+        event.title = this.$titleEl.val();
+    }
+
     event.failure = $.proxy(this._handlePostFailure, this);
     event.success = $.proxy(this._handlePostSuccess, this);
     return event;
@@ -219,6 +264,7 @@ Editor.prototype.initialize = function () {
 /** @override */
 Editor.prototype.getTemplateContext = function () {
     return {
+        showTitle: this._showTitle,
         strings: {
             post: this._i18n.POST
         }
@@ -243,6 +289,7 @@ Editor.prototype.render = function () {
     View.prototype.render.call(this);
     this.$resizeEl = this.getElementsByClass(this.classes.RESIZE);
     this.$textareaEl = this.getElementsByClass(this.classes.FIELD);
+    this.$titleEl = this.getElementsByClass(this.classes.TITLE);
     this.$errorContainer = this.$el;
     this._processPlaceholders();
     currentText && this.$textareaEl.val(currentText);
@@ -255,6 +302,10 @@ Editor.prototype.reset = function () {
     this.$resizeEl.html('');
     this.$textareaEl.val('');
     this.$textareaEl.height(this._originalHeight);
+
+    if (this._showTitle) {
+        this.$titleEl.val('');
+    }
 };
 
 /**

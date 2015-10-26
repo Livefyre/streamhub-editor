@@ -1,7 +1,7 @@
 var inherits = require('inherits');
 var Auth = require('auth');
-var AuthRequiredCommand = require('streamhub-sdk/ui/auth-required-command');
-var Command = require('streamhub-sdk/ui/command');
+var AuthRequiredCommand = require('streamhub-ui/auth-required-command');
+var Command = require('streamhub-ui/command');
 var LivefyreContent = require('streamhub-sdk/content/types/livefyre-content');
 var Observer = require('observer');
 var Editor = require('streamhub-editor');
@@ -101,6 +101,10 @@ AuthEditor.prototype.sendPostEvent = function (ev) {
     newContent.collection = this._collection;
     if (this._contentParentId) {
         newContent.parentId = this._contentParentId;
+    }
+
+    if (this._showTitle) {
+        newContent.title = ev.title;
     }
 
     function writeCollection() {

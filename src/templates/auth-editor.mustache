@@ -5,6 +5,9 @@
 </a>
 <div class="content-editor-input">
     <div class="lf-editor-resize" />
-    <textarea class='lf-editor-field'></textarea>
-    <a class='lf-editor-post-btn'>{{ strings.postBtn }}</a>
+    {{#showTitle}}
+      <input type="text" class="lf-editor-title" />
+    {{/showTitle}}
+    <textarea class="lf-editor-field"></textarea>
+    <a class="lf-editor-post-btn">{{ strings.postBtn }}</a>
 </div>

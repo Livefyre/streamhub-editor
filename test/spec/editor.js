@@ -21,6 +21,10 @@ describe('streamhub-editor', function() {
         expect(postBtnEl).to.be.visible;
     });
 
+    it('should not show the title field by default', function () {
+        expect(view.$titleEl.length).to.equal(0);
+    });
+
     it('should trigger an event when the post button is clicked', function() {
         view.sendPostEvent = function(){};
         view.$textareaEl.val('test');
@@ -103,6 +107,72 @@ describe('streamhub-editor', function() {
         view.$textareaEl.val('FOEVAR');
         view.render();
         expect(view.$textareaEl.val()).to.equal('FOEVAR');
+    });
+
+    it('should reset the value and title to empty', function () {
+        view = new Editor({
+            el: div,
+            showTitle: true
+        });
+        view.render();
+
+        view.$textareaEl.val('abc');
+        view.$titleEl.val('titlem');
+        view.reset();
+
+        expect(view.$textareaEl.val()).to.equal('');
+        expect(view.$titleEl.val()).to.equal('');
+    });
+
+    describe('title', function () {
+        var el;
+        var titleView;
+
+        beforeEach(function () {
+            el = document.createElement('div');
+            titleView = new Editor({
+                el: el,
+                showTitle: true
+            });
+            titleView.render();
+        });
+
+        it('renders a title if showTitle is true', function () {
+            expect(titleView.$titleEl.length).to.equal(1);
+        });
+
+        it('should reset blank title back to placeholder on blur in normal mode', function () {
+            titleView.$titleEl.val('');
+            titleView.$titleEl.blur();
+            expect(titleView.$titleEl.attr('placeholder')).to.equal(titleView._i18n.TITLE_PLACEHOLDERTEXT);
+        });
+
+        it('should not reset non-empty field back to placeholder on blur in normal mode', function() {
+            titleView.$titleEl.val('abc');
+            titleView.$titleEl.blur();
+            expect(titleView.$titleEl.val()).to.equal('abc');
+        });
+
+        it('should reset blank field back to placeholder on blur in hack mode', function() {
+            titleView._placeholderSupported = false;
+            titleView.$titleEl.val('');
+            titleView.$titleEl.blur();
+            expect(titleView.$titleEl.val()).to.equal(titleView._i18n.TITLE_PLACEHOLDERTEXT);
+        });
+
+        it('should not reset non-empty field back to placeholder on blur in hack mode', function() {
+            titleView._placeholderSupported = false;
+            titleView.$titleEl.val('abc');
+            titleView.$titleEl.blur();
+            expect(titleView.$titleEl.val()).to.equal('abc');
+        });
+
+        it('should not clear non-placeholder content on focus in hack mode', function() {
+            titleView._placeholderSupported = false;
+            titleView.$titleEl.val('abc');
+            titleView.$titleEl.focus();
+            expect(titleView.$titleEl.val()).to.equal('abc');
+        });
     });
 
     describe('_resize', function() {
