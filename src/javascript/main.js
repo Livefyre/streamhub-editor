@@ -286,6 +286,7 @@ Editor.prototype.handlePostSuccess = util.abstractMethod;
 /** @override */
 Editor.prototype.render = function () {
     var currentText = this.$textareaEl ? this.$textareaEl.val() : false;
+    var currentTitle = this.$titleEl ? this.$titleEl.val() : false;
     View.prototype.render.call(this);
     this.$resizeEl = this.getElementsByClass(this.classes.RESIZE);
     this.$textareaEl = this.getElementsByClass(this.classes.FIELD);
@@ -293,6 +294,7 @@ Editor.prototype.render = function () {
     this.$errorContainer = this.$el;
     this._processPlaceholders();
     currentText && this.$textareaEl.val(currentText);
+    currentTitle && this.$titleEl.val(currentTitle);
 };
 
 /**
