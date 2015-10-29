@@ -173,6 +173,12 @@ describe('streamhub-editor', function() {
             titleView.$titleEl.focus();
             expect(titleView.$titleEl.val()).to.equal('abc');
         });
+
+        it('should not clear title on render', function () {
+            titleView.$titleEl.val('FOEVAR');
+            titleView.render();
+            expect(titleView.$titleEl.val()).to.equal('FOEVAR');
+        });
     });
 
     describe('_resize', function() {
