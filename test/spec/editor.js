@@ -56,6 +56,26 @@ describe('streamhub-editor', function() {
         expect(view.validate({body: 'test'})).to.be.true;
     });
 
+    it('should validate the normalized html text from the textarea', function() {
+        view.showError = function(){};
+        view.$textareaEl.val('');
+        var obj = view.buildPostEventObj();
+        expect(obj.body).to.equal('<p></p>');
+        expect(view.validate(obj)).to.be.false;
+        view.$textareaEl.val('\n\n');
+        obj = view.buildPostEventObj();
+        expect(obj.body).to.equal('<p></p>');
+        expect(view.validate(obj)).to.be.false;
+        view.$textareaEl.val('something');
+        obj = view.buildPostEventObj();
+        expect(obj.body).to.equal('<p>something</p>');
+        expect(view.validate(obj)).to.be.true;
+        view.$textareaEl.val('\nsomething');
+        obj = view.buildPostEventObj();
+        expect(obj.body).to.equal('<p></p><p>something</p>');
+        expect(view.validate(obj)).to.be.true;
+    });
+
     it('should reset blank field back to placeholder on blur in normal mode', function() {
         view.$textareaEl.val('');
         view.$textareaEl.blur();
