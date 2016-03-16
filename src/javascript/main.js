@@ -346,11 +346,24 @@ Editor.prototype.showError = function (msg) {
  * @return {boolean} Whether the post data is valid or not.
  */
 Editor.prototype.validate = function (data) {
-    if (!data.body) {
+    if (!this.validateBody(data.body)) {
         this.showError(this._i18n.ERRORS.BODY);
         return false;
     }
     return true;
+};
+
+/**
+ * Validate the body of a post.
+ * @param {string} body
+ * @return {boolean}
+ */
+Editor.prototype.validateBody = function (body) {
+    if (!body) {
+        return false;
+    }
+    // Ensure that the user hasn't just entered spaces and newlines.
+    return !/^(<p>\s*<\/p>)*$/.test(body);
 };
 
 module.exports = Editor;
