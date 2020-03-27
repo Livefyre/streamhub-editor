@@ -1,16 +1,16 @@
 {
   "name": "streamhub-editor",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "main": [
     "./src/editor.js"
   ],
   "dependencies": {
     "cajon": "git://github.com/requirejs/cajon.git#0.1.11",
     "inherits": "git://github.com/Livefyre/inherits.git",
-    "streamhub-sdk": "git://github.com/Livefyre/streamhub-sdk.git#2.21.3",
-    "streamhub-ui": "git://github.com/Livefyre/streamhub-ui.git#0.1.3",
-    "auth": "git://github.com/Livefyre/auth.git#0.4.0",
-    "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#1.3.4",
+    "streamhub-sdk": "git://github.com/Livefyre/streamhub-sdk.git#2.37.18",
+    "streamhub-ui": "git://github.com/Livefyre/streamhub-ui.git#0.4.7",
+    "auth": "git://github.com/Livefyre/auth.git#0.4.2",
+    "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git#1.5.7",
     "jquery": "1.10.2",
     "mustache": "2.2.0",
     "observer": "git://github.com/Livefyre/Observer.git#0.1.0",
@@ -21,16 +21,16 @@
     "almond": "0.2.5",
     "chai": "1.8.1",
     "sinon-chai": "2.4.0",
-    "sinonjs": "1.7.3",
+    "sinonjs": "1.17.1",
     "livefyre-auth": "git://github.com/livefyre/livefyre-auth.git",
     "require-less": "git://github.com/gobengo/require-less#deponcss"
   },
   "resolutions": {
     "event-emitter": "0.1",
-    "livefyre-bootstrap": "1.3.4",
+    "livefyre-bootstrap": "1.5.7",
     "view": "1.4",
-    "auth": "0.4.0",
+    "auth": "0.4.2",
     "base64": "~0.4.0",
-    "streamhub-ui": "0.2.0"
+    "streamhub-ui": "0.4.7"
   }
 }
